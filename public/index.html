@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+	<script>
+	$(document).ready(function(){
+	    $("button").click(function(){
+	        $.ajax({url: "http://localhost:8000/item", success: function(result){
+	            console.log(result);
+	            $("#div1").html(JSON.stringify(result));
+				
+				var mydata = eval(result);
+				var table = $.makeTable(mydata);
+				$("#div2").html(table);
+				
+	        }});
+	    });
+	});
+	
+	$.makeTable = function (mydata) {
+		var table = $('<table border=1>');
+		var tblHeader = "<tr>";
+		for (var k in mydata[0]) tblHeader += "<th>" + k + "</th>";
+		tblHeader += "</tr>";
+		$(tblHeader).appendTo(table);
+		$.each(mydata, function (index, value) {
+			var TableRow = "<tr>";
+			$.each(value, function (key, val) {
+				TableRow += "<td>" + val + "</td>";
+			});
+			TableRow += "</tr>";
+			$(table).append(TableRow);
+		});
+		return ($(table));
+	};
+	
+	</script>
+</head>
+
+<body>
+	<button>Fazer chamada a Web Service</button>
+	<br />
+	<h2>Resposta obtida:</h2>
+	<div id="div1">Conteúdo a ser alterado!</div>
+	
+	<h2>Resposta convertida em tabela:</h2>
+	<p>Tabela com valores</p>
+	<div id="div2">Conteúdo a ser alterado!</div>
+</body>
+
+</html>
